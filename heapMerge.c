@@ -20,6 +20,7 @@ int main(){
 
 	do{
 		cust = getCust();
+		numCusts++;
 		cust->serial = cust->priority * 1000 + (1000 - numCusts);
 		result = heapInsert(prQueue1, cust);
 
@@ -33,6 +34,7 @@ int main(){
 
 	do{
 		cust = getCust();
+		numCusts++;
 		cust->serial = cust->priority * 1000 + (1000 - numCusts);
 		result = heapInsert(prQueue2, cust);
 
