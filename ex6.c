@@ -10,7 +10,7 @@ typedef struct{
 	int serial;
 } customer;
 
-int compareCustomers (void* cust1, void* cust2)
+int compareCustomers (void* cust1, void* cust2) //	"compare" function personalized for type "customer" input
 {
 //	Local Definitions
 	customer c1;
@@ -36,7 +36,7 @@ int main(){
 	int sizeReceiver;
 
 //	Statements
-	file = fopen("customersList.txt", "r");
+	file = fopen("customersList.txt", "r"); //	file containing customers' list in arrival order
 	heap = heapCreate(maxQueue, compareCustomers);
 
 	while(fscanf(file, "%s", temp) != EOF){
@@ -58,19 +58,18 @@ int main(){
 
 		generator->serial = tempNum;
 
-		/*printf("%s %i\n", generator->name, generator->serial);*/
 		heapInsert(heap, generator);
 	}
 
-	sizeReceiver = heap->size;
+	sizeReceiver = heap->size; //	gets heap size in order to limit for loop
 
 	printf("============Priority List============\n");
-	for (int i = 0; i < sizeReceiver; i++){
+	for (int i = 0; i < sizeReceiver; i++){					//this for consumes heap printing data in order
 		receiver = (customer*) malloc(sizeof(customer));
 
 		heapDelete(heap, (void**)&receiver);
 
-		printf("name: %s 	serial: %i\n", receiver->name, receiver->serial);
+		printf("name: %s 	   serial: %i\n", receiver->name, receiver->serial);
 	}
 	printf("=====================================\n");
 
