@@ -64,13 +64,15 @@ int main(){
 
 	sizeReceiver = heap->size;
 
+	printf("============Priority List============\n");
 	for (int i = 0; i < sizeReceiver; i++){
 		receiver = (customer*) malloc(sizeof(customer));
 
 		heapDelete(heap, (void**)&receiver);
 
-		printf("%s %i\n", receiver->name, receiver->serial);
+		printf("name: %s 	serial: %i\n", receiver->name, receiver->serial);
 	}
+	printf("=====================================\n");
 
 	fclose(file);
 	return 0;
