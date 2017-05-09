@@ -7,22 +7,41 @@
 
 typedef struct{
 	char name[20];
-	int mileage;
-	int years;
-	int sequence;
+	int serial;
 } customer;
+
+int compareCustomers (void* cust1, void* cust2)
+{
+//	Local Definitions
+	customer c1;
+	customer c2;
+	
+//	Statements
+	c1 = *(customer*)cust1;
+	c2 = *(customer*)cust2;
+	
+	if (c1.serial < c2.serial)
+	    return -1;
+	else if (c1.serial == c2.serial)
+	    return 0;
+	return +1;
+}	// compareCustomers
 
 int main(){
 //	Local declarations
+	HEAP *heap;
 	FILE *file;
 	char temp[20], surTemp[10];
-	int *tempNum;
-	customer *generator;
+	customer *generator, *receiver;
 
 //	Statements
 	file = fopen("customersList.txt", "r");
+	heap = heapCreate(maxQueue, compareCustomers);
 
 	while(fscanf(file, "%s", temp) != EOF){
+		//	Local declarations
+		int mileage, years, sequence, tempNum;
+
 		//	Statements
 		generator = (customer*) malloc(sizeof(customer)); 
 
@@ -30,16 +49,26 @@ int main(){
 		sprintf(temp, "%s %s", temp, surTemp);	//	concatenates name and surname
 		strcpy(generator->name, temp);			//	and puts it into the struct
 
-		fscanf(file, "%i", tempNum);			//
-		generator->mileage = *tempNum;			//
-												//
-		fscanf(file, "%i", tempNum);			//	fullfils the int struct slots 
-		generator->years = *tempNum;			//	that were left empty
-												//
-		fscanf(file, "%i", tempNum);			//
-		generator->sequence = *tempNum;			//
-		
-		printf("%s \n", temp);
+		fscanf(file, "%i", &mileage);			//	gets the customers' info from 
+		fscanf(file, "%i", &years);				//	list
+		fscanf(file, "%i", &sequence);			//
+
+		tempNum = (mileage / 1000) + years - sequence;	//	serial production
+
+		generator->serial = tempNum;
+
+		/*printf("%s %i\n", generator->name, generator->serial);*/
+		heapInsert(heap, generator);
+	}
+
+	printf("\n%i\n\n", heap->size);
+
+	for (int i = 0; i < heap->size; ++i){
+		receiver = (customer*) malloc(sizeof(customer));
+
+		heapDelete(heap, (void**)&receiver);
+
+		printf("%s %i\n", receiver->name, receiver->serial);
 	}
 
 	fclose(file);
