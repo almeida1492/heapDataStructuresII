@@ -33,6 +33,7 @@ int main(){
 	FILE *file;
 	char temp[20], surTemp[10];
 	customer *generator, *receiver;
+	int sizeReceiver;
 
 //	Statements
 	file = fopen("customersList.txt", "r");
@@ -61,9 +62,9 @@ int main(){
 		heapInsert(heap, generator);
 	}
 
-	printf("\n%i\n\n", heap->size);
+	sizeReceiver = heap->size;
 
-	for (int i = 0; i < heap->size; ++i){
+	for (int i = 0; i < sizeReceiver; i++){
 		receiver = (customer*) malloc(sizeof(customer));
 
 		heapDelete(heap, (void**)&receiver);
